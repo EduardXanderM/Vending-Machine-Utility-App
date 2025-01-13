@@ -50,8 +50,13 @@ class VendingMachine:
         try: # Using try for this function cancels the entire add_money function if the user inputs incorrectly
             amount = int(input("How much money will you add? "))
             if amount in [1, 5, 10, 20, 50]: # Checks if entered amount is valid
-                self.balance += amount 
+                self.balance += amount # Adds money to balance
                 print(f"Added AED {amount}. New Balance: AED {self.balance:.2f}")
+                money_again = int(input("[0] Continue to Menu, [1] Add More? ")) # Asks if you want to add more money
+                if money_again == 1:
+                    self.add_money()
+                else:
+                    return
             else: # Terminates function in case of invalid amount
                 print("Invalid Amount. Please select from the available options. Terminating...")
         except ValueError: # In case the user inputs a word or invalid number
@@ -70,6 +75,12 @@ class VendingMachine:
                         print(f"Total Cost: AED {total_cost:.2f}") 
                         self.cart.append((product, quantity)) # Adds the product and quantity to cart
                         print(f"Added {quantity} {product.name}(s) to cart.")
+                        product.stock -= quantity # Deducts chosen amount from stock
+                        food_again = int(input("[0] Continue to Menu, [1] Order Again? ")) # Asks if you want to order again
+                        if food_again == 1:
+                            self.select_product()
+                        else:
+                            return
                     else:
                         print(f"Not enough stock. Availabe Stock: {product.stock}")
                 else:
