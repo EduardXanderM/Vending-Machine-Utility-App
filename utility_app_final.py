@@ -89,6 +89,29 @@ class VendingMachine:
                 print("Invalid product code...")
         except ValueError:
             print("Invalid input. Please enter a valid number...")
+
+    def checkout(self): # Checkout, calculates total and and checks balance
+        if not self.cart: # Checks if cart is empty, got from ChatGPT
+            print("Your Cart is empty. Please add items before checkout.")
+            return
+        
+        print("Receipt:") # Start of receipt
+        total = 0 # Initiates a "total" variable
+        for product, quantity in self.cart: # Pulls out each instance of product and quantity to calculate total
+            cost = product.price * quantity
+            print(f"{product.name} x{quantity} - AED {cost:.2f}")
+            total += cost # Adds the the cost of goods from each iteration to the total
+
+        if self.balance >= total: # Checks if the balance of the user is enough
+            self.balance -= total # If balance is sufficient, deduct total cost from balance
+            change = self.balance # Designates change
+            print(f"Total: AED {total:.2f}")
+            print(f"Change: AED {change:.2f}")
+            print("Thank you for your purchase!")
+            self.balance = 0 # Resets balance after releasing change like in a real vending machine
+            self.cart.clear() # Clears cart
+        else:
+            print(f"Not enough balance. Please add AED {total - self.balance:.2f} more.") # Tells the user how much more is needed for their cart.
     
     def run(self): # The main loop where all of the methods work together
         while True: # Initiates the loop
